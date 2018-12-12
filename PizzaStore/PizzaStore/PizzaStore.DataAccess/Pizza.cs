@@ -14,9 +14,9 @@ namespace PizzaStore.DataAccess
         public string Name { get; set; }
         public string CrustType { get; set; }
         public decimal LinePrice { get; set; }
-        public int PizzaIngredientId { get; set; }
+        public int? PizzaIngredientId { get; set; }
 
-        public virtual PizzaIngredients PizzaIngredient { get; set; }
+        public virtual Ingredients PizzaIngredient { get; set; }
         public virtual ICollection<PizzaOrder> PizzaOrder { get; set; }
     }
 }

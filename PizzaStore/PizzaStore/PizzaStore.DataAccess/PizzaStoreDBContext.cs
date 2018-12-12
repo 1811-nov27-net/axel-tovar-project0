@@ -18,20 +18,10 @@ namespace PizzaStore.DataAccess
         public virtual DbSet<Ingredients> Ingredients { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Pizza> Pizza { get; set; }
-        public virtual DbSet<PizzaIngredients> PizzaIngredients { get; set; }
         public virtual DbSet<PizzaOrder> PizzaOrder { get; set; }
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<UserLocation> UserLocation { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=tcp:tovar-server.database.windows.net,1433;Initial Catalog=PizzaStoreDB;Persist Security Info=False;User ID=axel;Password=6372140At;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=10;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -100,23 +90,7 @@ namespace PizzaStore.DataAccess
                 entity.HasOne(d => d.PizzaIngredient)
                     .WithMany(p => p.Pizza)
                     .HasForeignKey(d => d.PizzaIngredientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Pizza_Ingredient_ID");
-            });
-
-            modelBuilder.Entity<PizzaIngredients>(entity =>
-            {
-                entity.ToTable("PizzaIngredients", "PS");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.IngredientId).HasColumnName("IngredientID");
-
-                entity.HasOne(d => d.Ingredient)
-                    .WithMany(p => p.PizzaIngredients)
-                    .HasForeignKey(d => d.IngredientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Pizza_Ingredients_ID");
             });
 
             modelBuilder.Entity<PizzaOrder>(entity =>

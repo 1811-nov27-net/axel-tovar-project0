@@ -136,27 +136,16 @@ ALTER TABLE PS.Ingredients
 
 GO
 
-ALTER TABLE PS.PizzaIngredients
-	ADD CONSTRAINT FK_Pizza_Ingredients_ID
-	FOREIGN KEY (IngredientID) REFERENCES PS.Ingredients (ID);
+ALTER TABLE PS.Pizza
+DROP CONSTRAINT FK_Pizza_Ingredients_ID;
 
 GO
 
 ALTER TABLE PS.Pizza
-ADD PizzaIngredientID INT NOT NULL;
+ADD PizzaIngredientID INT;
 
 GO
 
-SELECT *
-FROM PS.Pizza;
-
-GO
-
-ALTER TABLE PS.PizzaIngredients
-	ADD CONSTRAINT FK_Pizza_ID_With_Ingredients
-	FOREIGN KEY (PizzaID) REFERENCES PS.Pizza (ID);
-
-GO
 ALTER TABLE PS.PizzaOrder
 	ADD CONSTRAINT FK_Pizza_Order_ID
 	FOREIGN KEY (PizzaID) REFERENCES PS.Pizza (ID);
@@ -165,6 +154,12 @@ GO
 ALTER TABLE PS.PizzaOrder
 	ADD CONSTRAINT FK_Orders_ID
 	FOREIGN KEY (OrderID) REFERENCES PS.Orders (ID);
+
+ALTER TABLE PS.Pizza
+	ADD CONSTRAINT FK_Pizza_Ingredient_ID
+	FOREIGN KEY (PizzaIngredientID) REFERENCES PS.Ingredients (ID);
+
+GO
 
 INSERT INTO PS.Users(FirstName, LastName) VALUES
 ('Axel', 'Tovar'),
@@ -183,11 +178,7 @@ INSERT INTO PS.Store(Address, State) VALUES
 ('417 E. Arlington Road', 'TX'),
 ('808 First Street', 'CA'),
 ('606 Second Street', 'CA');
-GO
 
-SELECT *
-FROM PS.Ingredients;
--- ALTER TABLE PS.PizzaIngredients DROP COLUMN Name;
 GO
 
 
@@ -201,21 +192,36 @@ INSERT INTO PS.Ingredients(Name, StockNumber, StoreID) VALUES
 
 GO
 
-ALTER TABLE PS.Pizza
-ADD PizzaIngredientID INT NOT NULL;
-
-GO
-INSERT INTO PS.Pizza(Name, CrustType, LinePrice) VALUES
-('Large', 'Stuffed Crust', 10.50),
-('Deep Dish', 'Regular', 9.50),
-('Medium', 10, (SELECT TOP(1)ID FROM PS.Store WHERE ID = 1)),
-('Cheese', 4, (SELECT TOP(1)ID FROM PS.Store WHERE ID = 2)),
-('Bacon', 7, (SELECT TOP(1)ID FROM PS.Store WHERE ID = 1)),
-('Bacon', 5, (SELECT TOP(1)ID FROM PS.Store WHERE ID = 2));
+SELECT *
+FROM Ps.Ingredients;
 
 GO
 
 SELECT *
-FROM PS.Users
-	INNER JOIN PS.UserLocation AS ul ON PS.Users.ID = ul.UserID
-WHERE PS.Users.ID = ul.UserID;
+FROM PS.Pizza;
+
+GO
+
+INSERT INTO PS.Pizza(Name, CrustType, LinePrice, PizzaIngredientID) VALUES
+('Large', 'Stuffed Crust', 10.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 4)),
+('Large', 'Stuffed Crust', 10.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 6)),
+('Large', 'Stuffed Crust', 10.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 7)),
+('Deep Dish', 'Regular', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 6)),
+('Deep Dish', 'Regular', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 7)),
+('Deep Dish', 'Regular', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 8)),
+('Medium', 'Thin', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 9)),
+('Medium', 'Thin', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 6)),
+('Medium', 'Thin', 9.50, (SELECT TOP(1)ID FROM  PS.Ingredients WHERE ID = 5));
+
+GO
+ALTER TABLE PS.PizzaOrder
+ADD Quantity INT NOT NULL;
+
+SELECT *
+FROM PS.Ingredients;
+
+SELECT *
+FROM PS.UserLocation;
+
+SELECT *
+FROM PS.Pizza;

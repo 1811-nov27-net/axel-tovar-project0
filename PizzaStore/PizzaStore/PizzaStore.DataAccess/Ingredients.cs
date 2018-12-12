@@ -7,7 +7,7 @@ namespace PizzaStore.DataAccess
     {
         public Ingredients()
         {
-            PizzaIngredients = new HashSet<PizzaIngredients>();
+            Pizza = new HashSet<Pizza>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace PizzaStore.DataAccess
         public int StoreId { get; set; }
 
         public virtual Store Store { get; set; }
-        public virtual ICollection<PizzaIngredients> PizzaIngredients { get; set; }
+        public virtual ICollection<Pizza> Pizza { get; set; }
     }
 }
