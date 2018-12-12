@@ -1,0 +1,12 @@
+    public double? TotalDue
+        {
+            get
+            {
+                if(Pizzas?.Count > 0 && Pizzas.Sum(t => t.ListPrice) < 501)
+                {
+                    return Pizzas.Sum(t => t.ListPrice);
+                }
+            
+                return null;
+            }
+        }
